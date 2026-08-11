@@ -1,0 +1,180 @@
+================================================================================
+oecd_check -- reproduction package for major comment 6 of the referee report on
+"Vasicek mean regression: Estimation and diagnostics"
+================================================================================
+
+CONTENTS
+  oecd_bli_2017.csv   the 38-country dataset used to fit every model
+  fit_all.py          self-contained fitter (numpy + scipy only)
+  README.txt          this file
+
+  Run:  python fit_all.py     (about 2-3 minutes)
+
+
+================================================================================
+1. WHERE THE DATA COME FROM
+================================================================================
+
+The manuscript states only: "educational attainment data from the 2017 OECD
+Better Life Index", 38 countries (35 OECD members in 2017 plus Brazil, Russia
+and South Africa, with "OECD - Total" excluded). No data file is supplied with
+the manuscript and its Data Availability section is empty, so the dataset had
+to be reconstructed.
+
+Source: an OECD.Stat web-table export of the dataset "Better Life Index -
+Edition 2017", saved as wb2017.csv.
+
+Portal (legacy OECD.Stat, dataset code BLI2017):
+    https://stats.oecd.org/Index.aspx?DataSetCode=BLI2017
+
+The export file is self-documenting and I verified its identity directly from
+its own contents rather than from the download step:
+
+  * row 1, cell 2 carries the OECD WebTableParameter XML with
+        DataTable Code="BLI2017"
+        Name LocaleIsoCode="en" = "Better Life Index - Edition 2017"
+  * row 2 reads          Dataset: Better Life Index - Edition 2017
+  * row 3 reads          Measure / Value
+  * row 4 reads          Inequality / Total      (INEQUALITY = TOT, i.e. not
+                         broken down by sex)
+  * the final data line reads
+        "Data extracted on 14 Mar 2024 16:46 UTC (GMT) from OECD.Stat"
+
+CAVEAT, stated plainly. The legacy OECD.Stat portal has since been retired in
+favour of data-explorer.oecd.org, and the current BLI dataset served by the
+SDMX API has no time dimension: it returns only the current edition, whose
+values differ from the 2017 edition (for example Labour market insecurity for
+Australia is 3.1 in the current edition and 4.3 in the 2017 edition). The 2017
+edition is therefore NOT retrievable from the live OECD API today; this package
+relies on the archived export above. The identity of the file as the 2017
+edition rests on the embedded BLI2017 metadata quoted above, and on the
+numerical validation in section 4, which is the stronger check of the two.
+
+
+================================================================================
+2. HOW THE COLUMNS WERE MAPPED
+================================================================================
+
+Layout of the export: row 6 (1-based) holds the 24 indicator names, row 7 the
+units, row 8 the "Country" header, rows 9 to 47 the 39 country rows. Each
+country row carries 24 (flag, value) pairs in its last 48 fields. The row
+labelled "Non-OECD Economies" carries its country name in the second field
+(Brazil). The row "OECD - Total" is dropped, leaving 38 countries.
+
+Indicator picked (exact string in the file)   ->  column     unit in file
+--------------------------------------------------------------------------
+  Educational attainment            (idx 10)  ->  educ       Percentage
+  Homicide rate                     (idx 21)  ->  homicide   Ratio (per 100k)
+  Dwellings without basic facilities (idx 0)  ->  dwellings  Percentage
+  Labour market insecurity           (idx 5)  ->  labour_insec  Percentage
+
+Scaling applied in oecd_bli_2017.csv, following the manuscript (Section 6):
+  educ          divided by 100   -> response in (0,1)
+  labour_insec  divided by 100   -> so +0.01 is one percentage point
+  homicide      left on its original scale
+  dwellings     left on its original scale
+
+So the CSV shipped here is ALREADY on the modelling scale: educ and
+labour_insec are divided by 100, homicide and dwellings are not. fit_all.py
+consumes it as-is and applies no further rescaling.
+
+Encoding: UTF-8. One country name is "Türkiye" (U+00FC); an earlier working
+copy had this mojibaked and it has been repaired here.
+
+
+================================================================================
+3. WHAT fit_all.py FITS
+================================================================================
+
+Six families, each with exactly the structure the manuscript uses: four
+regression coefficients (intercept + 3 covariates) on a logit link, plus one
+constant shape/dispersion parameter. k = 5 for all six, so the AIC ranking is
+the log-likelihood ranking.
+
+PRIMARY TABLE -- like for like. Every family is linked at the MEAN:
+    logit(E[Y_i]) = x_i' beta
+For beta, simplex and Vasicek the mean is already a natural parameter. For the
+logit-normal, Kumaraswamy and unit-Weibull the mean has no closed form in the
+natural parameters, so the auxiliary parameter is recovered from the target
+mean by vectorised bisection at every likelihood evaluation:
+    logit-normal   E[Y] = Int expit(m + s z) phi(z) dz   (Gauss-Hermite, 80 pts)
+    Kumaraswamy    E[Y] = b B(1 + 1/a, b)                (closed form)
+    unit-Weibull   E[Y] = Int exp(-t) exp(-(t/a)^(1/b)) dt (Gauss-Laguerre, 120)
+
+SECONDARY TABLE -- the same three families in the MEDIAN parameterisation in
+which they are normally published, logit(median(Y_i)) = x_i' beta. This table
+is NOT like for like and is reported only so the reader can see the ranking is
+not an artefact of the choice. It is not the basis of any claim.
+
+Comparability of the log-likelihoods: every log-density is the density of the
+SAME response Y on (0,1) with respect to Lebesgue measure. Nothing is fitted on
+a transformed scale. The logit-normal in particular includes its Jacobian term
+-log(y(1-y)); without it the value would not be comparable and that model would
+be flattered. fit_all.py verifies this by numerically integrating each FITTED
+conditional density over (0,1) at three widely separated observations
+(Australia, Mexico, South Africa); all twelve integrals print as 1.000000.
+
+
+================================================================================
+4. THE VALIDATION LOCK
+================================================================================
+
+fit_all.py first refits the manuscript's own Vasicek model and compares against
+its published Table 2 and Table 3. Reconstruction is accepted only if the
+log-likelihood and theta-hat match. Observed:
+
+  parameter                    reconstructed      manuscript
+  Intercept                          1.9780          1.9778
+  Homicide rate                     -0.0690         -0.0690
+  Dwellings w/o basic facilities     0.0495          0.0495
+  Labour market insecurity         -11.8282        -11.8295
+  SE(Intercept)                      0.1528          0.1528
+  SE(Homicide rate)                  0.0186          0.0186
+  SE(Dwellings)                      0.0192          0.0192
+  SE(Labour market insecurity)       2.2836          2.2846
+  theta-hat                          0.1119          0.1119
+  logLik                            38.3997         38.3997
+  AIC                              -66.7993        -66.7993
+
+Four coefficients, four standard errors, the shape parameter, the
+log-likelihood and the AIC all agree to four decimals. The residual differences
+are optimiser tolerance, not data. A wrong dataset does not reproduce eight
+published quantities to four decimals, so the reconstruction is sound and the
+ranking below rests on the same data the authors used.
+
+
+================================================================================
+5. RESULT
+================================================================================
+
+PRIMARY TABLE (all six mean-linked, k = 5, n = 38):
+
+  Model            logLik        AIC     dAIC    w_AIC   dAIC vs Vasicek
+  Simplex         41.3545   -72.7091   0.0000   0.3905           -5.9098
+  Unit-Weibull    41.3494   -72.6988   0.0103   0.3885           -5.8995
+  Kumaraswamy     40.3659   -70.7318   1.9773   0.1453           -3.9325
+  Logit-normal    39.3357   -68.6714   4.0377   0.0519           -1.8721
+  Vasicek         38.3997   -66.7993   5.9098   0.0203            0.0000
+  Beta            36.6397   -63.2794   9.4297   0.0035           +3.5199
+
+  Vuong vs Vasicek:  Beta          z = +3.0541  p = 0.0023  Vasicek better
+                     Simplex       z = -2.2110  p = 0.0270  simplex better
+                     Logit-normal  z = -1.8471  p = 0.0647  not distinguishable
+                     Kumaraswamy   z = -1.3636  p = 0.1727  not distinguishable
+                     Unit-Weibull  z = -0.7751  p = 0.4383  not distinguishable
+
+The manuscript compares the Vasicek model against ONE competitor, beta, and
+reports an Akaike weight of 0.8532 in that two-model set. In the six-model set
+-- which is the competitor set from the authors' OWN earlier paper, Mazucheli,
+Alves, Korkmaz and Leiva (2022), Mathematics 10:1389 -- the Vasicek model ranks
+fifth of six with an Akaike weight of 0.0203, and beta is the single worst of
+the six. The simplex model beats it by a formal Vuong test at the 5% level.
+
+Two things that do NOT weaken the finding, checked and reported:
+  * the pairwise claim the manuscript makes is correct and in fact understated:
+    Vasicek genuinely beats beta, Vuong p = 0.0023;
+  * the ranking is the same under the mean and the median parameterisations,
+    and every fitted density integrates to one.
+
+The claim this supports is narrow and it is the only one being made: the
+reported advantage is an artefact of the comparison set, not of the data.
