@@ -1,0 +1,463 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{amsmath,amssymb,amsthm,mathrsfs}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Hil}{\mathcal{H}}
+\newcommand{\dd}{\mathrm{d}}
+\DeclareMathOperator{\spec}{spec}
+
+\title{Metric completion does not discretise the Bender--Brody--M\"uller
+Hamiltonian, and its decoupled extensions count divisors}
+\author{Francisco Bustillos\thanks{Affiliation to be completed.}}
+\date{Draft --- \today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The Bender--Brody--M\"uller (BBM) Hamiltonian $H=\Delta^{-1}(\hat x\hat p+\hat p\hat x)\Delta$,
+with $\Delta=1-e^{-i\hat p}$, is symmetric for the candidate metric
+$\eta_0=\Delta^\dagger\Delta$, whose symbol $4\sin^2(k/2)$ is positive with trivial kernel but
+not coercive. We work out the consequences. In the dilation representation any metric diagonal in
+momentum becomes a gauge factor along the dilation flow which cancels from both the eigenvalue
+equation and the induced normalisation; consequently no such metric can alter the spectrum, which
+remains $\R$, simple and purely absolutely continuous, and the BBM eigenfunctions
+$\psi_z=-\zeta(z,\cdot+1)$ fail to lie in the completion by a logarithmic margin that is exactly
+marginal on the critical line.
+
+The zeros of the symbol at $k\in2\pi\Z$ nevertheless cut the line into intervals and open a family
+of self-adjoint extensions. The decoupled ones are genuinely discrete above an infrared cutoff and,
+unlike compact quantum graphs, reproduce the correct $T\log T$ Weyl law. We show that they still
+fail, uniformly in the extension phases: writing $c=T/2\pi$ and $L_n=\log(1+1/n)$,
+\[
+N_\theta(T)\;\ge\;\sum_{n\ge1}\Big\lfloor \tfrac{T L_n}{2\pi}\Big\rfloor
+\;=\;N_{\mathrm{Riemann}}(T)+\frac{\gamma}{2\pi}\,T+o(T)
+\qquad\text{for every }\{\theta_n\},
+\]
+with $\gamma$ the Euler--Mascheroni constant. The bound is the Dirichlet divisor summatory
+function in disguise, $\sum_{n}\lfloor cL_n\rfloor=D(c)-\gamma c+o(c)$: the arithmetic this
+construction encodes is that of divisors, not of zeros. An independent rigidity obstruction, and
+the nearest-neighbour statistics, are quantified numerically. All computations are reproducible
+from the accompanying code.
+\end{abstract}
+
+\section{Introduction}
+
+Bender, Brody and M\"uller \cite{BBM2017} proposed, as a candidate Hilbert--P\'olya operator,
+\begin{equation}\label{eq:BBM}
+\hat H=\frac{1}{1-e^{-i\hat p}}\,(\hat x\hat p+\hat p\hat x)\,\bigl(1-e^{-i\hat p}\bigr),
+\qquad \hat p=-i\,\dd/\dd x ,
+\end{equation}
+on the half line. Its formal eigenfunctions are Hurwitz zeta functions and the boundary condition
+$\psi(0)=0$ reduces to $\zeta(z)=0$, which is a striking and genuine feature of the construction.
+The difficulty, identified early \cite{Bellissard2017} and analysed in detail in
+\cite{Liu2026}, is that the operator is not symmetric on $L^2(0,\infty)$ and the metric proposed
+to repair this is degenerate.
+
+This paper does three things. First (Sections~\ref{sec:coerc}--\ref{sec:dil}) it records, with
+numerical verification, exactly where and how badly the metric fails, and locates the eigenstates
+relative to the completion; this overlaps with \cite{Liu2026} and is included for completeness and
+because the quantitative form of the failure is used later. Second
+(Section~\ref{sec:nogo}) it proves that the failure cannot be repaired by \emph{any} metric
+diagonal in momentum, for a structural reason that is transparent in the dilation representation.
+Third, and this is the main contribution (Sections~\ref{sec:decoupled}--\ref{sec:rigid}), it
+addresses the one loophole that survives: the zeros of the metric symbol open a family of
+self-adjoint extensions which \emph{are} discrete and which, unlike the compact quantum graphs of
+Endres and Steiner \cite{EndresSteiner2010}, carry the correct $T\log T$ Weyl law. We show these
+fail at the next order, uniformly in their free parameters, by an amount equal to the
+Euler--Mascheroni constant.
+
+The distinction from \cite{EndresSteiner2010} is worth stating at once. Endres and Steiner give a
+complete classification of the self-adjoint realisations of the Berry--Keating operator on
+\emph{compact} quantum graphs, together with the secular equation, an exact trace formula and the
+Weyl asymptotics, and observe that the resulting counting functions are linear in $T$ and
+therefore cannot be the Riemann counting function. The graph generated here is not compact: the
+symbol's zero set $k\in2\pi\Z$ produces infinitely many edges, of lengths $L_n=\log(1+1/n)$ with
+$\sum_nL_n=\infty$, and the counting function is genuinely $T\log T$. The leading-order argument is
+therefore unavailable, and the obstruction has to be found one order down.
+
+\section{Setup and conventions}\label{sec:setup}
+
+On $L^2(0,\infty,\dd x)$ put $\Delta=1-e^{-i\hat p}$, so that $(\Delta\psi)(x)=\psi(x)-\psi(x-1)$
+with $\psi\equiv0$ for $x<0$, and
+\[
+A:=\hat x\hat p+\hat p\hat x=-i\Bigl(x\tfrac{\dd}{\dd x}+\tfrac{\dd}{\dd x}x\Bigr),
+\qquad H=\Delta^{-1}A\,\Delta .
+\]
+$H$ is symmetric for
+$\langle\psi,\varphi\rangle_{\eta_0}=\langle\Delta\psi,\Delta\varphi\rangle$, $\eta_0=\Delta^\dagger\Delta$,
+because $\langle\psi,H\varphi\rangle_{\eta_0}=\langle\Delta\psi,A\Delta\varphi\rangle$ and $A$ is
+symmetric.
+
+Two unitary changes of variable are used throughout. In position, $u=\log x$ and
+$(U\psi)(u)=e^{u/2}\psi(e^u)$ maps $L^2(\R_+,\dd x)\to L^2(\R,\dd u)$ and carries
+$A\mapsto-2i\,\dd/\dd u$. In momentum, $v=\log k$ and the same substitution carries
+$A\mapsto 2i\,\dd/\dd v$. We refer to either as the \emph{dilation representation}.
+
+We write $\gamma$ for the Euler--Mascheroni constant, $\gamma_n$ for the ordinary part of the
+$n$-th nontrivial zero, $c=T/2\pi$, and
+\[
+N_{\mathrm{Riemann}}(T)=\frac{T}{2\pi}\log\frac{T}{2\pi}-\frac{T}{2\pi}+\frac78
+\]
+for the smooth Riemann--von Mangoldt counting function.
+
+\section{The metric is positive, has trivial kernel, and is not coercive}\label{sec:coerc}
+
+$\Delta$ is the Fourier multiplier with symbol $1-e^{-ik}$, hence
+\begin{equation}\label{eq:symbol}
+\eta_0=f_0(\hat p),\qquad f_0(k)=\bigl|1-e^{-ik}\bigr|^2=4\sin^2(k/2).
+\end{equation}
+Thus $f_0>0$ off $2\pi\Z$, so $\eta_0>0$ with trivial kernel, while $f_0$ vanishes to second order
+at every $k\in2\pi\Z$, so $\inf\spec\eta_0=0$: the form is not coercive, and
+$\|\cdot\|_{\eta_0}$ is strictly weaker than $\|\cdot\|_{L^2}$.
+
+\begin{proposition}\label{prop:coerc}
+Let $\eta_0^{(X)}$ denote $\Delta^\dagger\Delta$ compressed to $(0,X]$ with a Dirichlet condition at
+the origin. Then $\lambda_{\min}(\eta_0^{(X)})\sim(\pi/2X)^2$ and
+$\sup_\psi\|\psi\|/\|\Delta\psi\|\sim2X/\pi$ as $X\to\infty$.
+\end{proposition}
+
+On a grid of spacing $1/m$ the unit shift is an exact index shift, so $\Delta$ decouples into $m$
+chains, each of which is the unit lower bidiagonal matrix; $\Delta^\dagger\Delta$ is then the
+discrete Neumann--Dirichlet Laplacian, whose smallest eigenvalue is
+$4\sin^2\bigl(\pi/(2(2X+1))\bigr)$. Table~\ref{tab:coerc} confirms both statements.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{rrrrr}
+\toprule
+$X$ & $\lambda_{\min}$ & $(\pi/2X)^2$ & ratio & $\sup\|\psi\|/\|\Delta\psi\|$ vs $2X/\pi$\\
+\midrule
+32  & $2.3355\times10^{-3}$ & $2.4096\times10^{-3}$ & 0.9693 & $20.69$ / $20.37$\\
+128 & $1.4943\times10^{-4}$ & $1.5060\times10^{-4}$ & 0.9922 & $81.81$ / $81.49$\\
+512 & $9.3940\times10^{-6}$ & $9.4124\times10^{-6}$ & 0.9980 & $326.27$ / $325.95$\\
+\bottomrule
+\end{tabular}
+\caption{Failure of coercivity, quantified.}\label{tab:coerc}
+\end{table}
+
+Three consequences matter. (i) The extremal direction is the slowly varying $k\to0$ mode: the
+$\eta_0$-norm sees only unit differences and is blind to anything varying slowly on the scale of
+the shift. (ii) $\Delta^{-1}=\sum_{n\ge0}e^{-in\hat p}$ is unbounded, so $H=\Delta^{-1}A\Delta$ is
+not a bounded similarity transform of $A$ and no spectral statement transfers for free. (iii) The
+completion
+\begin{equation}\label{eq:completion}
+\Hil_{\eta_0}=\overline{C_c^\infty(0,\infty)}^{\,\|\cdot\|_{\eta_0}}
+=\{\psi:\Delta\psi\in L^2(0,\infty)\}
+\end{equation}
+is not contained in $L^2$: the constant function already belongs to it. The map
+$V:\psi\mapsto\Delta\psi$ is unitary from $\Hil_{\eta_0}$ onto $L^2(0,\infty)$.
+
+\section{Dilation representation and the missing eigenstates}\label{sec:dil}
+
+\begin{proposition}\label{prop:dil}
+On $\Hil_{\eta_0}$ one has $VHV^{-1}=A$. In the dilation representation $H$ is multiplication by
+the dilation variable; its free self-adjoint realisation has spectrum $\R$, simple and purely
+absolutely continuous.
+\end{proposition}
+
+This is the content of \cite{Liu2026}; we verified it numerically to $10^{-14}$ by comparing the
+box spectrum with the ladder $4\pi n/L_u$.
+
+The generalised eigenfunctions are $A\,x^{-z}=i(2z-1)x^{-z}$, real eigenvalue iff
+$\operatorname{Re}z=\frac12$, with $z=\frac12-\frac{iE}{2}$. The BBM eigenfunctions are
+$\psi_z(x)=-\zeta(z,x+1)$, and the Hurwitz difference identity $\zeta(z,a)-\zeta(z,a+1)=a^{-z}$
+gives exactly
+\begin{equation}\label{eq:hurwitz}
+\Delta\psi_z=x^{-z},\qquad \psi_z(0)=-\zeta(z),
+\end{equation}
+so the boundary condition $\psi_z(0)=0$ \emph{is} $\zeta(z)=0$, with eigenvalue $E=-2\gamma_n$ at
+the zero $\tfrac12+i\gamma_n$. Both identities were verified to $10^{-32}$ at $z=\rho_1$.
+
+\begin{corollary}\label{cor:missing}
+For every $z$ with $\operatorname{Re}z=\frac12$,
+$\|\psi_z\|_{\eta_0}^2=\int_0^\infty x^{-2\operatorname{Re}z}\dd x=\int_0^\infty \dd x/x=\infty$,
+so $\psi_z\notin\Hil_{\eta_0}$. Moreover $\psi_z\notin L^2$, since
+$\psi_z(x)\sim x^{1-z}/(z-1)$.
+\end{corollary}
+
+Numerically $\int_a^b|\Delta\psi_z|^2\dd x=\log(b/a)$ to twelve digits. Two features deserve
+emphasis. The divergence is only logarithmic and is symmetric between $x\to0$ and $x\to\infty$:
+$\operatorname{Re}z=\frac12$ is precisely the exponent at which $x^{-z}$ fails square integrability
+at both ends simultaneously. And the failure is not repairable by enlarging the space: these are
+the delta-normalised generalised eigenfunctions of an absolutely continuous spectrum.
+
+\section{No momentum-diagonal metric can discretise}\label{sec:nogo}
+
+\begin{proposition}\label{prop:gauge}
+Let $\eta=f(\hat p)$ with $f>0$ a.e.\ and $g=f^{1/2}$. In the momentum dilation representation
+$v=\log k$, $A=2i\,\dd/\dd v$, $\eta$ is multiplication by $g(v)^2$, and
+\[
+H_g=g^{-1}Ag=2i\frac{\dd}{\dd v}+2i(\log g)',
+\qquad
+\psi_E(v)=g(v)^{-1}e^{-iEv/2},
+\qquad
+\|\psi_E\|_{\eta}=\bigl\|e^{-iEv/2}\bigr\| .
+\]
+In particular the eigenfunctions and their induced norms are independent of $f$ up to the gauge
+factor, and if $0<c_1\le f\le c_2$ then $\spec H_g=\spec A=\R$.
+\end{proposition}
+
+The metric is a pure gauge along the dilation flow; it cancels from the eigenvalue equation and
+from the normalisation alike. It can change which states are normalisable, never where the
+spectrum lies.
+
+We tested eight symbols numerically --- BBM, a coercive regularisation, $k^2$, $k^4$, $1+k^2$,
+$e^{-1/k^2}$, $4\sin^2(k/2)(1+k^2)$ and the trivial one --- with gauge condition numbers ranging
+over five orders of magnitude. In every case
+$\max|\spec H_g-\spec A|\le1.4\times10^{-11}$ with imaginary parts below $10^{-11}$; the predicted
+eigenfunctions gave residuals near $10^{-12}$ and an $\eta$-norm equal to $\sqrt{L_v}$ independent
+of the metric. Under box scaling every level slides as $4\pi/\log(\text{box})$, identically for all
+symbols, over sixteen orders of magnitude in box size; nothing converges.
+
+A metric diagonal in position fares no better: in $u=\log x$, conjugating $A$ by $x^a$ gives
+$H_w=-2i\,\dd/\dd u-2ia$, a rigid translation off the real axis, verified pointwise to $10^{-11}$.
+Such an $\eta$ is not a metric for $H$ at all.
+
+\section{Decoupled extensions: discreteness and the Weyl law}\label{sec:decoupled}
+
+The symbol $g(k)=2|\sin(k/2)|$ vanishes at $k\in2\pi\Z$. Functions blowing up like $1/g$ there
+still have finite $\eta_0$-norm, so each interval $I_n=(2\pi n,2\pi(n+1))$, of length
+$L_n=\log(1+1/n)$ in $v$, supports solutions for every real $E$: numerically
+$\|\psi_E\|_{\eta_0}^2=L_n$ exactly, for arbitrary real $E$. Hence every real number is an
+eigenvalue of the adjoint with infinite multiplicity and the deficiency indices are
+$(\infty,\infty)$, as reported in \cite{Liu2026}; the free extension glues the intervals and is
+the purely continuous operator of Proposition~\ref{prop:dil}.
+
+Among the extensions that do \emph{not} couple the intervals, each $I_n$ carries the $U(1)$ family
+of quasi-periodic conditions $\psi(b)=e^{i\theta_n}\psi(a)$ --- the complete set of self-adjoint
+realisations of a first-order operator on an interval. In the variable $\gamma=E/2$ the levels of
+$I_n$ are
+\begin{equation}\label{eq:ladder}
+\gamma^{(n)}_m=\frac{2\pi m+\theta_n}{L_n},\qquad m\in\Z,
+\qquad\text{spacing } s_n=\frac{2\pi}{L_n}\sim 2\pi n .
+\end{equation}
+The interval $k\in(0,2\pi)$ has infinite length in $v$ and contributes absolutely continuous
+spectrum; we remove it by an infrared cutoff $k>2\pi$. What remains has finitely many levels below
+every height and is therefore genuinely discrete, with counting function of order $T\log T$. This
+is the point at which a compactness argument of the kind used in \cite{EndresSteiner2010} is no
+longer available.
+
+\section{The \texorpdfstring{$\theta$}{theta}-uniform obstruction}\label{sec:rigid}
+
+\begin{theorem}\label{thm:main}
+Let $N_\theta(T)$ be the number of levels in $(0,T]$ of the decoupled extension with phases
+$\{\theta_n\}_{n\ge1}$, $\theta_n\in[0,2\pi)$, and let $c=T/2\pi$. Then for every choice of phases
+\begin{equation}\label{eq:bound}
+N_\theta(T)\;\ge\;\sum_{n\ge1}\bigl\lfloor c\,L_n\bigr\rfloor .
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Fix $n$ and write $a=cL_n$, $t=\theta_n/2\pi\in[0,1)$. The positive levels of \eqref{eq:ladder}
+not exceeding $T$ are those with $0<2\pi m+\theta_n\le TL_n$. If $t=0$ this forces $m\ge1$ and
+$m\le a$, giving $\lfloor a\rfloor$ levels. If $t>0$ it forces $m\ge0$ and $m\le a-t$, giving
+$\lfloor a-t\rfloor+1$ levels. Write $a=A+f$ with $A=\lfloor a\rfloor$ and $f\in[0,1)$. If $t\le f$
+then $\lfloor a-t\rfloor=A$ and the count is $A+1$; if $t>f$ then $\lfloor a-t\rfloor=A-1$ and the
+count is $A$. In all cases the count is at least $A=\lfloor cL_n\rfloor$. Summing over $n$ gives
+\eqref{eq:bound}.
+\end{proof}
+
+\begin{proposition}\label{prop:divisor}
+With $D(c)=\sum_{n\le c}\lfloor c/n\rfloor$ the Dirichlet divisor summatory function,
+\begin{equation}\label{eq:divisor}
+\sum_{n\ge1}\lfloor cL_n\rfloor=\sum_{m\ge1}\Bigl\lfloor\frac{1}{e^{m/c}-1}\Bigr\rfloor
+=D(c)-\gamma c+o(c).
+\end{equation}
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+The first equality is exact and is the layer-cake identity
+$\sum_n\lfloor cL_n\rfloor=\sum_{m\ge1}\#\{n:L_n\ge m/c\}$ together with
+$\#\{n:\log(1+1/n)\ge y\}=\lfloor 1/(e^{y}-1)\rfloor$; it was verified exactly for
+$c$ up to $10^6$. For the second, set $\delta_n=1/n-\log(1+1/n)$, so that
+$cL_n=c/n-c\delta_n$ and $\sum_{n\ge1}\delta_n=\lim_M(H_M-\log(M+1))=\gamma$. Then
+\[
+\sum_n\bigl(\lfloor cL_n\rfloor-\lfloor c/n\rfloor\bigr)
+=-c\sum_n\delta_n+\sum_n\bigl(\{c/n\}-\{cL_n\}\bigr)=-\gamma c+o(c),
+\]
+the last step requiring that the fractional-part sum be $o(c)$.
+\end{proof}
+
+\begin{remark}
+The $o(c)$ in the fractional-part sum is the one analytic gap in this draft. Numerically the
+discrepancy between $\sum_n\lfloor cL_n\rfloor$ and $D(c)-\gamma c$ is $76$ at $c=10^6$, i.e.\
+consistent with $O(\sqrt c)$, matching the error term in Dirichlet's theorem
+$D(c)=c\log c+(2\gamma-1)c+O(\sqrt c)$. Note that the fractional parts are \emph{not}
+equidistributed: $\sum_n\{cL_n\}/c\to1-\gamma=0.422784$, measured $0.422769$ at $c=10^6$, rather
+than the $1/2$ equidistribution would give. A rigorous treatment should go through this
+statement.
+\end{remark}
+
+\begin{corollary}\label{cor:main}
+For every choice of extension phases,
+\begin{equation}\label{eq:excess}
+N_\theta(T)\;\ge\;N_{\mathrm{Riemann}}(T)+\frac{\gamma}{2\pi}\,T+o(T).
+\end{equation}
+The decoupled extension therefore carries at least $(\gamma/2\pi)T\approx0.0919\,T$ levels below
+height $T$ that are not zeros, and cannot be made to coincide with the zero set.
+\end{corollary}
+
+\begin{proof}
+Combine Theorem~\ref{thm:main} with \eqref{eq:divisor} and
+$D(c)=c\log c+(2\gamma-1)c+O(\sqrt c)$, giving
+$\sum_n\lfloor cL_n\rfloor=c\log c+(\gamma-1)c+o(c)$, against
+$N_{\mathrm{Riemann}}(T)=c\log c-c+\frac78$.
+\end{proof}
+
+Table~\ref{tab:divisor} shows the convergence; the last column tends to $\gamma=0.577216$. The
+$\theta$-uniformity of \eqref{eq:bound} was additionally checked against $500$ random phase vectors
+at three heights.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{rrrrr}
+\toprule
+$c$ & $\sum_n\lfloor cL_n\rfloor$ & $D(c)$ & $D(c)-\gamma c$ & excess$/c$\\
+\midrule
+$10^{2}$ & $419$ & $482$ & $424.3$ & $0.576080$\\
+$10^{3}$ & $6\,487$ & $7\,069$ & $6\,491.8$ & $0.578370$\\
+$10^{4}$ & $87\,872$ & $93\,668$ & $87\,895.8$ & $0.576772$\\
+$10^{5}$ & $1\,109\,015$ & $1\,166\,750$ & $1\,109\,028.4$ & $0.577216$\\
+$10^{6}$ & $13\,392\,742$ & $13\,970\,034$ & $13\,392\,818.3$ & $0.577231$\\
+\bottomrule
+\end{tabular}
+\caption{The $\theta$-uniform bound is the divisor summatory function shifted by $\gamma c$.
+Last column: $\bigl(\sum_n\lfloor cL_n\rfloor-N_{\mathrm{Riemann}}\bigr)/c\to\gamma$.}
+\label{tab:divisor}
+\end{table}
+
+\section{Rigidity and spectral statistics}\label{sec:stats}
+
+Corollary~\ref{cor:main} is a statement about density. A second, independent and numerically much
+stronger obstruction is that each ladder \eqref{eq:ladder} is an arithmetic progression while the
+zeros are not. Since the ladders are decoupled, the joint optimum over phases factorises, and each
+$\theta_n$ may be optimised separately. Table~\ref{tab:rigid} reports the minimum number of levels
+that cannot be placed within $\varepsilon$ of any zero.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{rrrrrrr}
+\toprule
+$T$ & zeros $\le T$ & $\varepsilon$ & min levels & matched & spurious & bound $\gamma c$\\
+\midrule
+$143.11$ & $50$  & $0.02$ & $66$  & $28$  & $38$  & $13.1$\\
+$236.52$ & $100$ & $0.02$ & $127$ & $50$  & $77$  & $21.7$\\
+$396.38$ & $200$ & $0.02$ & $247$ & $96$  & $151$ & $36.4$\\
+$811.18$ & $500$ & $0.02$ & $605$ & $221$ & $384$ & $74.5$\\
+$811.18$ & $500$ & $0.10$ & $640$ & $370$ & $270$ & $74.5$\\
+\bottomrule
+\end{tabular}
+\caption{Best possible phases against the first $500$ zeros. The spurious count grows linearly and
+exceeds the density bound by about a factor of five.}\label{tab:rigid}
+\end{table}
+
+The nearest-neighbour spacing statistics make the same point in the standard language.
+Table~\ref{tab:stats} compares the unfolded spacings of the first $500$ zeros, of the
+Berry--Keating ladder in a box tuned to height $T$ (the free extension of
+Proposition~\ref{prop:dil} truncated so that its density matches), and of the decoupled extension.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lrrrrr}
+\toprule
+spectrum & $\#s$ & var & $P(s<0.3)$ & KS vs GUE & KS vs Poisson\\
+\midrule
+Riemann zeros & $499$ & $0.1397$ & $0.0120$ & $0.0497$ ($p=0.16$) & $0.3312$ ($p=3\times10^{-49}$)\\
+tuned ladder & $400$ & $0.0000$ & $0.0000$ & $0.5331$ & $0.6321$\\
+decoupled extension & $20\,084$ & $1.2247$ & $0.3781$ & $0.3655$ & $0.1454$\\
+\midrule
+GUE & --- & $0.1800$ & $0.0134$ & --- & ---\\
+Poisson & --- & $1.0000$ & $0.2592$ & --- & ---\\
+picket fence & --- & $0.0000$ & $0.0000$ & --- & ---\\
+\bottomrule
+\end{tabular}
+\caption{Unfolded nearest-neighbour spacings.}\label{tab:stats}
+\end{table}
+
+The zeros are consistent with GUE and reject Poisson decisively. The two candidate spectra sit at
+opposite extremes: the tuned ladder is a perfectly rigid picket fence, and the decoupled extension
+shows \emph{less} rigidity than Poisson, because ladders with commensurable spacings pile levels
+together. Matching a counting function is one smooth constraint; neither model carries the
+correlations.
+
+\section{Scope, relation to earlier work, and the open problem}\label{sec:open}
+
+Sections~\ref{sec:coerc}--\ref{sec:dil} overlap with \cite{Liu2026} and are presented as
+verification. Proposition~\ref{prop:gauge} is elementary once stated in the dilation
+representation, but appears not to have been used to rule out the metric-repair strategy as a
+class. The $xp$ literature already supplies operators whose spectra reproduce the averaged zeros
+\cite{Sierra2008,Sierra2011,BerryKeating1999}, so a correct $T\log T$ Weyl law is not by itself
+evidence of anything; Corollary~\ref{cor:main} is a statement one order below that.
+
+Theorem~\ref{thm:main} and Corollary~\ref{cor:main} cover the \emph{decoupled} family only: one
+phase per interval, no coupling between intervals. Extensions that couple the intervals form a
+strictly larger family. For \emph{compact} quantum graphs that family has been completely
+classified by Endres and Steiner \cite{EndresSteiner2010}, who rule it out by a Weyl argument;
+their argument does not apply here, because the graph generated by the BBM symbol has infinitely
+many edges of total infinite length and its Weyl law is $T\log T$ rather than linear. Whether an
+analogue of \eqref{eq:excess} holds for coupled extensions of this non-compact graph is open, and
+is the natural next question. The mechanism behind Theorem~\ref{thm:main} is the exact
+equispacing of the spectrum of a first-order operator on an interval, which coupling destroys: the
+secular determinant no longer factorises. A trace formula for the infinite graph, in the spirit of
+\cite{EndresSteiner2010}, is the obvious tool.
+
+\appendix
+\section{Numerical methods and reproducibility}
+
+All computations use NumPy, SciPy and mpmath. Position-space work is done on a uniform grid of
+spacing $1/m$, so that the unit shift defining $\Delta$ is an exact index shift and no
+interpolation error enters; $A$ is discretised as $-i(X\partial+\partial X)$ with a centred
+difference, which is exactly Hermitian. Dilation-space work uses Fourier spectral differentiation
+on a periodic grid, reproducing the ladder $4\pi n/L_u$ to $10^{-14}$. The Hurwitz identities are
+evaluated with mpmath at 30 digits. Zeros are obtained from \texttt{mpmath.zetazero}. The spacing
+statistics unfold the zeros by the Riemann--von Mangoldt smooth counting function and the decoupled
+spectrum by a local density estimate on a centred window of $400$ levels.
+
+Code and saved output accompany this draft as \texttt{step1\_coercivity.py},
+\texttt{step2\_dilation.py}, \texttt{step3\_metric\_scan.py}, \texttt{step4\_zeta\_compare.py} and
+\texttt{step5\_rigidity.py}.
+
+\paragraph{Note on reference \cite{Liu2026}.} The preprint was not directly accessible from the
+environment in which this draft was prepared; its statements were reconstructed from secondary
+summaries and then re-derived and verified independently. Before submission the citation, the
+precise statement of its results, and in particular its indexing of the ``missing eigenstates''
+must be checked against the original. The same applies to the bibliographic details of
+\cite{Sierra2011}.
+
+\begin{thebibliography}{9}
+\bibitem{BBM2017} C.~M. Bender, D.~C. Brody and M.~P. M\"uller,
+\emph{Hamiltonian for the zeros of the Riemann zeta function},
+Phys.\ Rev.\ Lett.\ \textbf{118} (2017) 130201, arXiv:1608.03679.
+\bibitem{Bellissard2017} J.~Bellissard,
+\emph{Comment on ``Hamiltonian for the zeros of the Riemann zeta function''},
+arXiv:1704.02644.
+\bibitem{Liu2026} K.~Liu,
+\emph{Metric completion of the Bender--Brody--M\"uller Hamiltonian: dilation spectrum and missing
+eigenstates}, arXiv:2607.19067 (2026).
+\bibitem{BerryKeating1999} M.~V. Berry and J.~P. Keating,
+\emph{The Riemann zeros and eigenvalue asymptotics},
+SIAM Rev.\ \textbf{41} (1999) 236--266.
+\bibitem{EndresSteiner2010} S.~Endres and F.~Steiner,
+\emph{The Berry--Keating operator on $L^2(\R_>,\dd x)$ and on compact quantum graphs with general
+self-adjoint realizations}, J.\ Phys.\ A \textbf{43} (2010) 095204, arXiv:0912.3183.
+\bibitem{Sierra2008} G.~Sierra,
+\emph{A quantum mechanical model of the Riemann zeros},
+New J.\ Phys.\ \textbf{10} (2008) 033016, arXiv:0712.0705.
+\bibitem{Sierra2011} G.~Sierra and J.~Rodr\'iguez-Laguna,
+\emph{The $H=xp$ model revisited and the Riemann zeros},
+Phys.\ Rev.\ Lett.\ \textbf{106} (2011) 200201, arXiv:1102.5356.
+\end{thebibliography}
+
+\end{document}
