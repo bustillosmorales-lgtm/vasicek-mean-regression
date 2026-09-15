@@ -1,0 +1,116 @@
+Step 4 - compare the candidate spectra with the first Riemann zeros.
+
+Step 3 produced exactly two spectra that are not trivially continuous:
+
+  (M1) the free extension in a Berry-Keating box, k in [1, K].  Perfectly
+       arithmetic ladder, spacing 4 pi / log K in the E = 2 gamma variable.
+       Tuning K = T / 2 pi reproduces the mean density of the zeros at height T.
+
+  (M2) the decoupled extension of the BBM metric above an infrared cutoff.
+       Genuinely discrete, with N(E) = (E/4pi)[log(E/4pi) - 1 + gamma] + o(E),
+       i.e. the correct E log E Weyl law.
+
+Both reproduce a counting function.  This script asks the question that
+counting functions cannot answer: are these the zeros?
+
+Three tests, in increasing severity:
+  1. the counting function N(E);
+  2. the individual levels, side by side with the zeros;
+  3. the nearest-neighbour spacing distribution of the unfolded spectra, which
+     is the standard discriminator: Poisson (uncorrelated), GUE (the zeros),
+     or a picket fence (rigid ladder).
+
+first 500 nontrivial zeros, gamma_1 = 14.134725142 ... gamma_500 = 811.184359
+
+1. counting functions, in the zero variable gamma = E/2
+------------------------------------------------------------------------------
+Berry-Keating box tuned at T = 811.1844:  K = T/2pi = 129.1040, log K = 4.860618
+ladder spacing in gamma: 2 pi / log K = 1.292672
+mean zero spacing near T:            1.292672   (identical by construction)
+
+     gamma   N_true   N_smooth  M1 ladder  M2 decoupled
+     50.00       10       9.42      38.68            14
+    100.00       29      29.00      77.36            38
+    200.00       79      79.19     154.72            98
+    300.00      138     137.71     232.08           166
+    811.18      500     499.30     627.53           574
+
+M1 matches by construction - the box was tuned to make it match.  M2 matches to
+leading order with an excess density gamma/2pi per unit height.  Neither is
+evidence of anything: a counting function is one number per energy, and both
+models were built to have a logarithmic density.
+
+2. the levels themselves
+------------------------------------------------------------------------------
+  n    zero gamma_n     M1 ladder   rel err    M2 decoupled   rel err
+  1       14.134725      1.292672     90.9%        9.064720     35.9%
+  2       21.022040      2.585344     87.7%       15.496242     26.3%
+  3       25.010858      3.878016     84.5%       18.129441     27.5%
+  4       30.424876      5.170688     83.0%       21.840726     28.2%
+  5       32.935062      6.463360     80.4%       27.194161     17.4%
+  6       37.586178      7.756032     79.4%       28.157593     25.1%
+  7       40.918719      9.048704     77.9%       30.992483     24.3%
+  8       43.327073     10.341376     76.1%       34.462109     20.5%
+  9       48.005151     11.634048     75.8%       36.258881     24.5%
+ 10       49.773832     12.926720     74.0%       40.760023     18.1%
+ 11       52.970321     14.219392     73.2%       43.681452     17.5%
+ 12       56.446248     15.512064     72.5%       45.323601     19.7%
+
+At the bottom of the spectrum the ladder is hopeless, and for a structural
+reason: a fixed box has CONSTANT density, while the density of zeros grows like
+log(gamma).  A single box can only be right at one height.  So look at the
+height it was tuned to.
+
+   zero gamma_n   M1 ladder near T   rel err   zero spacing   ladder spacing
+     797.263470         797.578643     0.04%       1.444100         1.292672
+     798.707570         798.871315     0.02%       0.946766         1.292672
+     799.654336         800.163987     0.06%       1.949910         1.292672
+     801.604246         801.456659     0.02%       0.937738         1.292672
+     802.541985         802.749331     0.03%       0.701111         1.292672
+     803.243096         804.042003     0.10%       1.519143         1.292672
+     804.762239         805.334675     0.07%       1.099397         1.292672
+     805.861636         806.627347     0.10%       2.290179         1.292672
+     808.151815         807.920019     0.03%       1.045968         1.292672
+     809.197783         809.212691     0.00%       0.884022         1.292672
+     810.081805         810.505363     0.05%       1.102554         1.292672
+     811.184359         811.798035     0.08%            nan         1.292672
+
+Tuned at its own height the ladder is within a percent or two in position -
+that is the density agreeing, nothing more.  The spacings give it away: the
+ladder's are all identical to the last digit, the zeros' vary by a factor of
+several.  M2 is off by tens of percent and its levels depend on extension
+phases that were set to zero by fiat.
+
+3. nearest-neighbour spacings of the unfolded spectra
+------------------------------------------------------------------------------
+                  spectrum      #s    mean     var  P(s<0.3)             KS vs GUE         KS vs Poisson
+             Riemann zeros     499  1.0000  0.1397    0.0120     0.0497 (p=1.6e-01)     0.3312 (p=2.8e-49)
+   M1 Berry-Keating ladder     400  1.0000  0.0000    0.0000     0.5331 (p=1.1e-106)     0.6321 (p=2.1e-155)
+    M2 decoupled extension   20084  1.0000  1.2247    0.3781     0.3655 (p=0.0e+00)     0.1454 (p=0.0e+00)
+            reference: GUE       -  1.0000  0.1800    0.0134
+        reference: Poisson       -  1.0000  1.0000    0.2592
+   reference: picket fence       -  1.0000  0.0000    0.0000
+
+P(s < 0.3) is the level-repulsion probe: GUE suppresses close pairs
+quadratically, Poisson does not suppress them at all.
+
+STEP 4 VERDICT
+------------------------------------------------------------------------------
+The zeros show the GUE level repulsion they are known for: spacing variance
+near 0.18 and small s suppressed.  The two candidate spectra sit at the two
+opposite extremes of the classification:
+
+  * the Berry-Keating ladder is a picket fence, variance 0 - maximally rigid,
+    no fluctuation at all, so it cannot be a zero sequence;
+  * the decoupled extension is a superposition of many uncorrelated arithmetic
+    ladders and shows no level repulsion at all: variance above 1 and close
+    pairs MORE frequent than Poisson, because ladders with commensurable
+    spacings pile levels on top of each other.  It overshoots the randomness
+    the zeros do not have in the first place.
+
+Matching a counting function is cheap, and both models do it.  Neither carries
+the correlations.  Reproducing N(E) means reproducing one smooth function;
+reproducing the zeros means reproducing a spectrum whose fluctuations are
+rigid in a very specific way, and nothing in the metric-completion construction
+supplies them - because, as step 3 showed, the metric is a gauge factor that
+drops out of the eigenvalue equation entirely.

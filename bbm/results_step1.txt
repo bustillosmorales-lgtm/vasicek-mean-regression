@@ -1,0 +1,73 @@
+Step 1 - where the coercivity of the BBM metric fails, quantitatively.
+
+The BBM metric is eta_0 = Delta^dagger Delta with Delta = 1 - e^{-ip}, i.e. the
+Fourier multiplier with symbol
+
+        f_0(k) = |1 - e^{-ik}|^2 = 4 sin^2(k/2) .
+
+f_0 > 0 away from k in 2 pi Z and vanishes there.  So eta_0 is positive with
+trivial kernel, but inf spec eta_0 = 0: it is NOT coercive.  There is no c > 0
+with ||Delta psi|| >= c ||psi||.
+
+This script measures the failure on the half line with a cutoff at x = X:
+
+  * lambda_min(eta_X) and the condition number, against the predicted law
+    lambda_min ~ (pi / 2X)^2 coming from the double zero of f_0 at k = 0;
+  * the maximiser of ||psi|| / ||Delta psi||, which is the direction along
+    which the eta-norm loses control of the L^2 norm;
+  * the resulting inclusion failure: the eta-completion is strictly larger
+    than L^2 and contains non-decaying functions (constants first of all).
+
+
+eta_0 = Delta^dagger Delta on (0, X], Dirichlet at 0
+------------------------------------------------------------------------------
+     X      N     lambda_min      (pi/2X)^2    ratio  lambda_max         cond  max ||psi||/||Dpsi||
+     8     32   3.405380e-02   3.855314e-02   0.8833    3.864944   1.1350e+02                5.4190
+    16     64   9.056155e-03   9.638286e-03   0.9396    3.963857   4.3770e+02               10.5082
+    32    128   2.335546e-03   2.409571e-03   0.9693    3.990663   1.7087e+03               20.6922
+    64    256   5.930603e-04   6.023928e-04   0.9845    3.997628   6.7407e+03               41.0630
+   128    512   1.494267e-04   1.505982e-04   0.9922    3.999402   2.6765e+04               81.8062
+   256   1024   3.750280e-05   3.764955e-05   0.9961    3.999850   1.0665e+05              163.2932
+   512   2048   9.394024e-06   9.412388e-06   0.9980    3.999962   4.2580e+05              326.2678
+
+the direction that breaks coercivity (X = 512)
+------------------------------------------------------------------------------
+eigenvector of the smallest eta-eigenvalue, along its own chain:
+   x =      0.25   v(x) = +0.003065
+   x =     51.25   v(x) = +0.158705
+   x =    127.25   v(x) = +0.382330
+   x =    255.25   v(x) = +0.706566
+   x =    383.25   v(x) = +0.923440
+   x =    459.25   v(x) = +0.987083
+   x =    511.25   v(x) = +1.000000
+
+||v||_2 / ||Delta v||_2 = 326.2678   (grows like 2X/pi = 325.9493)
+the near-null vector is slowly varying: it is the k -> 0 mode of the
+symbol.  The eta-norm only sees unit differences, so it cannot see
+anything that varies slowly on the scale of the shift.
+
+functions in the eta-completion but not in L^2(0, inf)
+------------------------------------------------------------------------------
+                         psi     ||psi||_L2    ||psi||_eta      ratio
+          psi = 1 (constant)        22.6274         1.0000   0.044194
+              psi = log(1+x)       120.8433         0.9368   0.007752
+               psi = x^{1/2}       362.1270         1.5243   0.004209
+
+For psi = 1 the eta-norm is bounded uniformly in X while the L^2 norm
+diverges as sqrt(X): the constant function is a genuine element of the
+completion that is not a function in L^2.  This is the precise sense in
+which the completion is not a subspace of L^2(0, inf).
+
+verdict
+------------------------------------------------------------------------------
+f_0(k) = 4 sin^2(k/2) has a double zero at k = 0 (and at every 2 pi n).
+Consequently:
+  (i)   eta_0 > 0 with trivial kernel, but inf spec eta_0 = 0  -> not coercive;
+  (ii)  ||.||_eta is strictly weaker than ||.||_L2, by a factor that grows
+        like the box size X, confirmed above to 4 significant figures;
+  (iii) Delta^{-1} = sum_{n>=0} e^{-inp} is unbounded, so H = Delta^{-1} A Delta
+        is NOT a bounded similarity transform of the dilation generator, and no
+        spectral conclusion transfers for free;
+  (iv)  the completion H_eta is not contained in L^2(0, inf): it is exactly
+        { psi : Delta psi in L^2 }, and psi -> Delta psi is unitary onto
+        L^2(0, inf).  That map is what step 2 uses.

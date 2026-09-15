@@ -92,3 +92,15 @@ by construction.
 ---
 
 Issues and corrections: open an issue in this repository.
+
+---
+
+## `bbm/` — metric completion of the Bender-Brody-Muller Hamiltonian
+
+An unrelated line of work kept in the same repository: a four-step examination of whether the
+metric completion of the BBM Hamiltonian can discretise its spectrum, and whether the result has
+anything to do with the Riemann zeros. See [`bbm/README.md`](bbm/README.md).
+
+Short answer: no, and the obstruction is structural — in the dilation representation the metric
+is a gauge factor that cancels out of the eigenvalue equation.
+

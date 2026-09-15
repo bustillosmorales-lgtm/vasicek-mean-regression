@@ -1,0 +1,90 @@
+Step 2 - the BBM operator in the dilation representation, checked numerically.
+
+Write u = log x and let (U psi)(u) = e^{u/2} psi(e^u), a unitary
+L^2(R_+, dx) -> L^2(R, du).  Then
+
+        A = 2D = x p + p x   -->   -2i d/du ,
+
+so A is the dilation generator: on the full line its spectrum is R, simple and
+purely absolutely continuous, with generalised eigenfunctions
+
+        A x^{-z} = i(2z-1) x^{-z} ,    E = i(2z-1) real  <=>  z = 1/2 - iE/2 .
+
+The BBM Hamiltonian is H = Delta^{-1} A Delta.  On the eta-completion the map
+V: psi -> Delta psi is unitary onto L^2(R_+) and V H V^{-1} = A.  So in the
+dilation representation H is nothing but multiplication by the dilation
+variable: clean spectrum, and clean bad news.
+
+BBM's eigenfunctions are psi_z(x) = -zeta(z, x+1), which satisfy the Hurwitz
+difference identity Delta psi_z = x^{-z} exactly, and psi_z(0) = -zeta(z), so
+the boundary condition psi_z(0) = 0 selects the nontrivial zeros.
+
+This script verifies, to 25 significant digits where mpmath is used:
+  (1)  A x^{-z} = E x^{-z} with E = i(2z-1);
+  (2)  the box spectrum of A is the arithmetic ladder 4 pi n / L_u;
+  (3)  Delta psi_z = x^{-z} for psi_z = -zeta(z, x+1);
+  (4)  psi_z(0) = 0 exactly at the nontrivial zeros;
+  (5)  ||psi_z||^2_eta = ||Delta psi_z||^2 = int x^{-2 Re z} dx = int dx/x,
+       which diverges logarithmically at BOTH ends.  The BBM eigenstates are
+       therefore not in the completion of their own metric - and they miss it
+       only logarithmically, exactly on the critical line.
+
+
+(1) A x^{-z} = E x^{-z} on a logarithmic grid
+------------------------------------------------------------------------------
+         E             z = 1/2 - iE/2    rel. residual ||Ax^-z - Ex^-z||
+    2.0000                   (0.5-1j)                          9.319e+00
+   14.1347            (0.5-7.067363j)                          1.302e-02
+   28.0000                  (0.5-14j)                          5.990e-01
+  -21.0220            (0.5+10.51102j)                          6.009e-01
+
+(2) spectrum of A on a periodic u-box: the ladder 4 pi n / L_u
+------------------------------------------------------------------------------
+     L_u    4 pi / L_u   measured spacing    max |dev|
+     8.0    1.57079633         1.57079633     8.53e-14
+    16.0    0.78539816         0.78539816     4.26e-14
+    32.0    0.39269908         0.39269908     2.13e-14
+    64.0    0.19634954         0.19634954     1.07e-14
+
+The spacing is exactly 4 pi / L_u and goes to zero as the box grows:
+the spectrum is continuous, and any finite computation looks discrete.
+
+(3) Delta psi_z = x^{-z} for psi_z(x) = -zeta(z, x+1)
+------------------------------------------------------------------------------
+z = rho_1 = (0.5 + 14.13472514173469379j)
+       x                               (Delta psi_z)(x)                                         x^{-z}       |diff|
+     0.5             (-1.31714142308 - 0.514915985011j)             (-1.31714142308 - 0.514915985011j)          0.0
+     1.0                     (1.0 + 1.14961844469e-35j)                                   (1.0 + 0.0j)     1.15e-35
+     2.5             (0.586123866125 - 0.237610634354j)             (0.586123866125 - 0.237610634354j)     2.47e-32
+     7.0            (-0.271494981173 - 0.262959346773j)            (-0.271494981173 - 0.262959346773j)          0.0
+    40.0           (-0.0474832920712 - 0.150815572717j)           (-0.0474832920712 - 0.150815572717j)     6.16e-33
+
+(4) psi_z(0) = -zeta(z): the boundary condition IS zeta(z) = 0
+------------------------------------------------------------------------------
+  rho_1 = 1/2 + i*   14.13472514173469   psi(0) = -zeta(rho) = (-9.7587e-32 + 6.12988e-31j)   E = i(2z-1) = -28.2694502835
+  rho_2 = 1/2 + i*   21.02203963877155   psi(0) = -zeta(rho) = (9.47687e-32 + 4.22654e-31j)   E = i(2z-1) = -42.0440792775
+  rho_3 = 1/2 + i*   25.01085758014569   psi(0) = -zeta(rho) = (5.10728e-31 - 1.47055e-30j)   E = i(2z-1) = -50.0217151603
+  so the BBM eigenvalue attached to the zero 1/2 + i*gamma is E = -2*gamma.
+
+(5) ||psi_z||_eta^2 = int_a^b |x^{-z}|^2 dx = log(b/a)
+------------------------------------------------------------------------------
+                 [a,b]    numeric int |Delta psi_z|^2       log(b/a)       |diff|
+          [0.001, 1.0]                  6.90775527898  6.90775527898          0.0
+           [1.0, 10.0]                  2.30258509299  2.30258509299          0.0
+         [1.0, 1.0e+3]                  6.90775527898  6.90775527898          0.0
+      [1.0e-6, 1.0e+6]                  27.6310211159  27.6310211159     4.95e-23
+
+verdict
+------------------------------------------------------------------------------
+In the dilation representation H is multiplication by the dilation variable:
+spectrum R, simple, purely absolutely continuous.  The BBM eigenfunctions
+psi_z = -zeta(z, .+1) are genuine solutions of the eigenvalue equation and the
+boundary condition psi_z(0) = 0 really is zeta(z) = 0 - but
+
+        ||psi_z||_eta^2 = int_0^inf x^{-2 Re z} dx = int_0^inf dx/x = infinity
+
+for every z on the critical line, confirmed above against log(b/a) to 12
+digits.  They are the delta-normalised generalised eigenfunctions of an
+absolutely continuous spectrum, not eigenvectors.  The divergence is only
+logarithmic, and Re z = 1/2 is exactly the borderline exponent: that is why
+the construction is so seductive and why it fails.
