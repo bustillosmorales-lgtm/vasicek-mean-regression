@@ -16,7 +16,7 @@ $\eta_0=\Delta^\dagger\Delta$, whose symbol $4\sin^2(k/2)$ is positive with triv
 not coercive. We work out the consequences. In the dilation representation any metric diagonal in
 momentum becomes a gauge factor along the dilation flow which cancels from both the eigenvalue
 equation and the induced normalisation; consequently no such metric can alter the spectrum, which
-remains $\R$, simple and purely absolutely continuous, and the BBM eigenfunctions
+remains $R$, simple and purely absolutely continuous, and the BBM eigenfunctions
 $\psi_z=-\zeta(z,\cdot+1)$ fail to lie in the completion by a logarithmic margin that is exactly
 marginal on the critical line.
 
@@ -40,7 +40,7 @@ from the accompanying code.
 Bender, Brody and Muller [BBM2017] proposed, as a candidate Hilbert--P\'olya operator,
 
 \hat H=\frac{1}{1-e^{-i\hat p}} (\hat x\hat p+\hat p\hat x) \bigl(1-e^{-i\hat p}\bigr),
-\qquad \hat p=-i \dd/d x ,
+\qquad \hat p=-i d/dx ,
 
 on the half line. Its formal eigenfunctions are Hurwitz zeta functions and the boundary condition
 $\psi(0)=0$ reduces to $\zeta(z)=0$, which is a striking and genuine feature of the construction.
@@ -48,13 +48,13 @@ The difficulty, identified early [Bellissard2017] and analysed in detail in
 [Liu2026], is that the operator is not symmetric on $L^2(0,\infty)$ and the metric proposed
 to repair this is degenerate.
 
-This paper does three things. First (Sections~\ref{sec:coerc}--\ref{sec:dil}) it records, with
+This paper does three things. First (sections on coercivity and the dilation representation) it records, with
 numerical verification, exactly where and how badly the metric fails, and locates the eigenstates
 relative to the completion; this overlaps with [Liu2026] and is included for completeness and
 because the quantitative form of the failure is used later. Second
-(Section~\ref{sec:nogo}) it proves that the failure cannot be repaired by any metric
+(section on momentum-diagonal metrics) it proves that the failure cannot be repaired by any metric
 diagonal in momentum, for a structural reason that is transparent in the dilation representation.
-Third, and this is the main contribution (Sections~\ref{sec:decoupled}--\ref{sec:rigid}), it
+Third, and this is the main contribution (sections on decoupled extensions and the theta-uniform obstruction), it
 addresses the one loophole that survives: the zeros of the metric symbol open a family of
 self-adjoint extensions which are discrete and which, unlike the compact quantum graphs of
 Endres and Steiner [EndresSteiner2010], carry the correct $T\log T$ Weyl law. We show these
@@ -85,8 +85,8 @@ symmetric.
 
 Two unitary changes of variable are used throughout. In position, $u=\log x$ and
 $(U\psi)(u)=e^{u/2}\psi(e^u)$ maps $L^2(R_+,d x)\to L^2(R,d u)$ and carries
-$A\mapsto-2i \dd/d u$. In momentum, $v=\log k$ and the same substitution carries
-$A\mapsto 2i \dd/d v$. We refer to either as the dilation representation.
+$A\mapsto-2i d/du$. In momentum, $v=\log k$ and the same substitution carries
+$A\mapsto 2i d/dv$. We refer to either as the dilation representation.
 
 We write $\gamma$ for the Euler--Mascheroni constant, $\gamma_n$ for the ordinary part of the
 $n$-th nontrivial zero, $c=T/2\pi$, and
@@ -113,7 +113,7 @@ $\sup_\psi\|\psi\|/\|\Delta\psi\|\sim2X/\pi$ as $X\to\infty$.
 On a grid of spacing $1/m$ the unit shift is an exact index shift, so $\Delta$ decouples into $m$
 chains, each of which is the unit lower bidiagonal matrix; $\Delta^\dagger\Delta$ is then the
 discrete Neumann--Dirichlet Laplacian, whose smallest eigenvalue is
-$4\sin^2\bigl(\pi/(2(2X+1))\bigr)$. Table~\ref{tab:coerc} confirms both statements.
+$4\sin^2\bigl(\pi/(2(2X+1))\bigr)$. the table below confirms both statements.
 
 $X$  |  $\lambda_{\min}$  |  $(\pi/2X)^2$  |  ratio  |  $\sup\|\psi\|/\|\Delta\psi\|$ vs $2X/\pi$
 
@@ -121,7 +121,7 @@ $X$  |  $\lambda_{\min}$  |  $(\pi/2X)^2$  |  ratio  |  $\sup\|\psi\|/\|\Delta\p
 128  |  $1.4943x10^{-4}$  |  $1.5060x10^{-4}$  |  0.9922  |  $81.81$ / $81.49$
 512  |  $9.3940x10^{-6}$  |  $9.4124x10^{-6}$  |  0.9980  |  $326.27$ / $325.95$
 
-Table: Failure of coercivity, quantified.}
+Table: Failure of coercivity, quantified.
 
 Three consequences matter. (i) The extremal direction is the slowly varying $k\to0$ mode: the
 $\eta_0$-norm sees only unit differences and is blind to anything varying slowly on the scale of
@@ -129,24 +129,24 @@ the shift. (ii) $\Delta^{-1}=\sum_{n\ge0}e^{-in\hat p}$ is unbounded, so $H=\Del
 not a bounded similarity transform of $A$ and no spectral statement transfers for free. (iii) The
 completion
 
-H_eta_{\eta_0}=\overline{C_c^\infty(0,\infty)}^{ \|\cdot\|_{\eta_0}}
+H_{\eta_0}=\overline{C_c^\infty(0,\infty)}^{ \|\cdot\|_{\eta_0}}
 =\{\psi:\Delta\psi\in L^2(0,\infty)\}
 
 is not contained in $L^2$: the constant function already belongs to it. The map
-$V:\psi\mapsto\Delta\psi$ is unitary from $H_eta_{\eta_0}$ onto $L^2(0,\infty)$.
+$V:\psi\mapsto\Delta\psi$ is unitary from $H_{\eta_0}$ onto $L^2(0,\infty)$.
 
 == Dilation representation and the missing eigenstates ==
 
 PROPOSITION. 
-On $H_eta_{\eta_0}$ one has $VHV^{-1}=A$. In the dilation representation $H$ is multiplication by
-the dilation variable; its free self-adjoint realisation has spectrum $\R$, simple and purely
+On $H_{\eta_0}$ one has $VHV^{-1}=A$. In the dilation representation $H$ is multiplication by
+the dilation variable; its free self-adjoint realisation has spectrum $R$, simple and purely
 absolutely continuous.
 
 This is the content of [Liu2026]; we verified it numerically to $10^{-14}$ by comparing the
 box spectrum with the ladder $4\pi n/L_u$.
 
 The generalised eigenfunctions are $A x^{-z}=i(2z-1)x^{-z}$, real eigenvalue iff
-$Rez=\frac12$, with $z=\frac12-\frac{iE}{2}$. The BBM eigenfunctions are
+$Re z=\frac12$, with $z=\frac12-\frac{iE}{2}$. The BBM eigenfunctions are
 $\psi_z(x)=-\zeta(z,x+1)$, and the Hurwitz difference identity $\zeta(z,a)-\zeta(z,a+1)=a^{-z}$
 gives exactly
 
@@ -156,14 +156,14 @@ so the boundary condition $\psi_z(0)=0$ is $\zeta(z)=0$, with eigenvalue $E=-2\g
 the zero $\tfrac12+i\gamma_n$. Both identities were verified to $10^{-32}$ at $z=\rho_1$.
 
 COROLLARY. 
-For every $z$ with $Rez=\frac12$,
-$\|\psi_z\|_{\eta_0}^2=\int_0^\infty x^{-2Rez}d x=\int_0^\infty d x/x=\infty$,
-so $\psi_z\notinH_eta_{\eta_0}$. Moreover $\psi_z\notin L^2$, since
+For every $z$ with $Re z=\frac12$,
+$\|\psi_z\|_{\eta_0}^2=\int_0^\infty x^{-2Re z}d x=\int_0^\infty d x/x=\infty$,
+so $\psi_z\notin H_{\eta_0}$. Moreover $\psi_z\notin L^2$, since
 $\psi_z(x)\sim x^{1-z}/(z-1)$.
 
 Numerically $\int_a^b|\Delta\psi_z|^2d x=\log(b/a)$ to twelve digits. Two features deserve
 emphasis. The divergence is only logarithmic and is symmetric between $x\to0$ and $x\to\infty$:
-$Rez=\frac12$ is precisely the exponent at which $x^{-z}$ fails square integrability
+$Re z=\frac12$ is precisely the exponent at which $x^{-z}$ fails square integrability
 at both ends simultaneously. And the failure is not repairable by enlarging the space: these are
 the delta-normalised generalised eigenfunctions of an absolutely continuous spectrum.
 
@@ -171,7 +171,7 @@ the delta-normalised generalised eigenfunctions of an absolutely continuous spec
 
 PROPOSITION. 
 Let $\eta=f(\hat p)$ with $f>0$ a.e. and $g=f^{1/2}$. In the momentum dilation representation
-$v=\log k$, $A=2i \dd/d v$, $\eta$ is multiplication by $g(v)^2$, and
+$v=\log k$, $A=2i d/dv$, $\eta$ is multiplication by $g(v)^2$, and
 \[
 H_g=g^{-1}Ag=2i\frac{d}{d v}+2i(\log g)',
 \qquad
@@ -180,7 +180,7 @@ H_g=g^{-1}Ag=2i\frac{d}{d v}+2i(\log g)',
 \|\psi_E\|_{\eta}=\bigl\|e^{-iEv/2}\bigr\| .
 \]
 In particular the eigenfunctions and their induced norms are independent of $f$ up to the gauge
-factor, and if $0<c_1\le f\le c_2$ then $spec H_g=spec A=\R$.
+factor, and if $0<c_1\le f\le c_2$ then $spec H_g=spec A=R$.
 
 The metric is a pure gauge along the dilation flow; it cancels from the eigenvalue equation and
 from the normalisation alike. It can change which states are normalisable, never where the
@@ -195,7 +195,7 @@ of the metric. Under box scaling every level slides as $4\pi/\log(\text{box})$, 
 symbols, over sixteen orders of magnitude in box size; nothing converges.
 
 A metric diagonal in position fares no better: in $u=\log x$, conjugating $A$ by $x^a$ gives
-$H_w=-2i \dd/d u-2ia$, a rigid translation off the real axis, verified pointwise to $10^{-11}$.
+$H_w=-2i d/du-2ia$, a rigid translation off the real axis, verified pointwise to $10^{-11}$.
 Such an $\eta$ is not a metric for $H$ at all.
 
 == Decoupled extensions: discreteness and the Weyl law ==
@@ -206,14 +206,14 @@ $L_n=\log(1+1/n)$ in $v$, supports solutions for every real $E$: numerically
 $\|\psi_E\|_{\eta_0}^2=L_n$ exactly, for arbitrary real $E$. Hence every real number is an
 eigenvalue of the adjoint with infinite multiplicity and the deficiency indices are
 $(\infty,\infty)$, as reported in [Liu2026]; the free extension glues the intervals and is
-the purely continuous operator of Proposition~\ref{prop:dil}.
+the purely continuous operator of the Proposition above.
 
 Among the extensions that do not couple the intervals, each $I_n$ carries the $U(1)$ family
 of quasi-periodic conditions $\psi(b)=e^{i\theta_n}\psi(a)$ --- the complete set of self-adjoint
 realisations of a first-order operator on an interval. In the variable $\gamma=E/2$ the levels of
 $I_n$ are
 
-\gamma^{(n)}_m=\frac{2\pi m+\theta_n}{L_n},\qquad m\inZ,
+\gamma^{(n)}_m=\frac{2\pi m+\theta_n}{L_n},\qquad m\in Z,
 \qquad\text{spacing } s_n=\frac{2\pi}{L_n}\sim 2\pi n .
 
 The interval $k\in(0,2\pi)$ has infinite length in $v$ and contributes absolutely continuous
@@ -222,7 +222,7 @@ every height and is therefore genuinely discrete, with counting function of orde
 is the point at which a compactness argument of the kind used in [EndresSteiner2010] is no
 longer available.
 
-== The -uniform obstruction}
+== The theta-uniform obstruction ==
 
 THEOREM. 
 Let $N_\theta(T)$ be the number of levels in $(0,T]$ of the decoupled extension with phases
@@ -231,13 +231,13 @@ $\{\theta_n\}_{n\ge1}$, $\theta_n\in[0,2\pi)$, and let $c=T/2\pi$. Then for ever
 N_\theta(T)\;\ge\;\sum_{n\ge1}\bigl\lfloor c L_n\bigr\rfloor .
 
 PROOF. 
-Fix $n$ and write $a=cL_n$, $t=\theta_n/2\pi\in[0,1)$. The positive levels of \eqref{eq:ladder}
+Fix $n$ and write $a=cL_n$, $t=\theta_n/2\pi\in[0,1)$. The positive levels of the display above
 not exceeding $T$ are those with $0<2\pi m+\theta_n\le TL_n$. If $t=0$ this forces $m\ge1$ and
 $m\le a$, giving $\lfloor a\rfloor$ levels. If $t>0$ it forces $m\ge0$ and $m\le a-t$, giving
 $\lfloor a-t\rfloor+1$ levels. Write $a=A+f$ with $A=\lfloor a\rfloor$ and $f\in[0,1)$. If $t\le f$
 then $\lfloor a-t\rfloor=A$ and the count is $A+1$; if $t>f$ then $\lfloor a-t\rfloor=A-1$ and the
 count is $A$. In all cases the count is at least $A=\lfloor cL_n\rfloor$. Summing over $n$ gives
-\eqref{eq:bound}.
+the display above.
 
 PROPOSITION. 
 With $D(c)=\sum_{n\le c}\lfloor c/n\rfloor$ the Dirichlet divisor summatory function,
@@ -275,13 +275,13 @@ The decoupled extension therefore carries at least $(\gamma/2\pi)T\approx0.0919 
 height $T$ that are not zeros, and cannot be made to coincide with the zero set.
 
 PROOF. 
-Combine Theorem~\ref{thm:main} with \eqref{eq:divisor} and
+Combine the Theorem above with the divisor identity and
 $D(c)=c\log c+(2\gamma-1)c+O(\sqrt c)$, giving
 $\sum_n\lfloor cL_n\rfloor=c\log c+(\gamma-1)c+o(c)$, against
 $N_{Riemann}(T)=c\log c-c+\frac78$.
 
-Table~\ref{tab:divisor} shows the convergence; the last column tends to $\gamma=0.577216$. The
-$\theta$-uniformity of \eqref{eq:bound} was additionally checked against $500$ random phase vectors
+the table below shows the convergence; the last column tends to $\gamma=0.577216$. The
+$\theta$-uniformity of the display above was additionally checked against $500$ random phase vectors
 at three heights.
 
 $c$  |  $\sum_n\lfloor cL_n\rfloor$  |  $D(c)$  |  $D(c)-\gamma c$  |  excess$/c$
@@ -297,10 +297,10 @@ Last column: $\bigl(\sum_n\lfloor cL_n\rfloor-N_{Riemann}\bigr)/c\to\gamma$.}
 
 == Rigidity and spectral statistics ==
 
-Corollary~\ref{cor:main} is a statement about density. A second, independent and numerically much
-stronger obstruction is that each ladder \eqref{eq:ladder} is an arithmetic progression while the
+the Corollary above is a statement about density. A second, independent and numerically much
+stronger obstruction is that each ladder the display above is an arithmetic progression while the
 zeros are not. Since the ladders are decoupled, the joint optimum over phases factorises, and each
-$\theta_n$ may be optimised separately. Table~\ref{tab:rigid} reports the minimum number of levels
+$\theta_n$ may be optimised separately. the table below reports the minimum number of levels
 that cannot be placed within $\varepsilon$ of any zero.
 
 $T$  |  zeros $\le T$  |  $\varepsilon$  |  min levels  |  matched  |  spurious  |  bound $\gamma c$
@@ -312,12 +312,12 @@ $811.18$  |  $500$  |  $0.02$  |  $605$  |  $221$  |  $384$  |  $74.5$
 $811.18$  |  $500$  |  $0.10$  |  $640$  |  $370$  |  $270$  |  $74.5$
 
 Table: Best possible phases against the first $500$ zeros. The spurious count grows linearly and
-exceeds the density bound by about a factor of five.}
+exceeds the density bound by about a factor of five.
 
 The nearest-neighbour spacing statistics make the same point in the standard language.
-Table~\ref{tab:stats} compares the unfolded spacings of the first $500$ zeros, of the
+the table below compares the unfolded spacings of the first $500$ zeros, of the
 Berry--Keating ladder in a box tuned to height $T$ (the free extension of
-Proposition~\ref{prop:dil} truncated so that its density matches), and of the decoupled extension.
+the Proposition above truncated so that its density matches), and of the decoupled extension.
 
 spectrum  |  $\#s$  |  var  |  $P(s<0.3)$  |  KS vs GUE  |  KS vs Poisson
 
@@ -329,7 +329,7 @@ GUE  |  ---  |  $0.1800$  |  $0.0134$  |  ---  |  ---
 Poisson  |  ---  |  $1.0000$  |  $0.2592$  |  ---  |  ---
 picket fence  |  ---  |  $0.0000$  |  $0.0000$  |  ---  |  ---
 
-Table: Unfolded nearest-neighbour spacings.}
+Table: Unfolded nearest-neighbour spacings.
 
 The zeros are consistent with GUE and reject Poisson decisively. The two candidate spectra sit at
 opposite extremes: the tuned ladder is a perfectly rigid picket fence, and the decoupled extension
@@ -339,26 +339,24 @@ correlations.
 
 == Scope, relation to earlier work, and the open problem ==
 
-Sections~\ref{sec:coerc}--\ref{sec:dil} overlap with [Liu2026] and are presented as
-verification. Proposition~\ref{prop:gauge} is elementary once stated in the dilation
+the section above overlap with [Liu2026] and are presented as
+verification. the Proposition above is elementary once stated in the dilation
 representation, but appears not to have been used to rule out the metric-repair strategy as a
 class. The $xp$ literature already supplies operators whose spectra reproduce the averaged zeros
 [Sierra2008,Sierra2011,BerryKeating1999], so a correct $T\log T$ Weyl law is not by itself
-evidence of anything; Corollary~\ref{cor:main} is a statement one order below that.
+evidence of anything; the Corollary above is a statement one order below that.
 
-Theorem~\ref{thm:main} and Corollary~\ref{cor:main} cover the decoupled family only: one
+the Theorem above and the Corollary above cover the decoupled family only: one
 phase per interval, no coupling between intervals. Extensions that couple the intervals form a
 strictly larger family. For compact quantum graphs that family has been completely
 classified by Endres and Steiner [EndresSteiner2010], who rule it out by a Weyl argument;
 their argument does not apply here, because the graph generated by the BBM symbol has infinitely
 many edges of total infinite length and its Weyl law is $T\log T$ rather than linear. Whether an
-analogue of \eqref{eq:excess} holds for coupled extensions of this non-compact graph is open, and
-is the natural next question. The mechanism behind Theorem~\ref{thm:main} is the exact
+analogue of the display above holds for coupled extensions of this non-compact graph is open, and
+is the natural next question. The mechanism behind the Theorem above is the exact
 equispacing of the spectrum of a first-order operator on an interval, which coupling destroys: the
 secular determinant no longer factorises. A trace formula for the infinite graph, in the spirit of
 [EndresSteiner2010], is the obvious tool.
-
-\appendix
 
 == Numerical methods and reproducibility ==
 
@@ -375,7 +373,7 @@ Code and saved output accompany this draft as step1\_coercivity.py,
 step2\_dilation.py, step3\_metric\_scan.py, step4\_zeta\_compare.py and
 step5\_rigidity.py.
 
-Note on reference [Liu2026 .] The preprint was not directly accessible from the
+Note on reference [Liu2026]. The preprint was not directly accessible from the
 environment in which this draft was prepared; its statements were reconstructed from secondary
 summaries and then re-derived and verified independently. Before submission the citation, the
 precise statement of its results, and in particular its indexing of the ``missing eigenstates''
@@ -389,13 +387,13 @@ Phys. Rev. Lett. 118 (2017) 130201, arXiv:1608.03679.
 Comment on ``Hamiltonian for the zeros of the Riemann zeta function'',
 arXiv:1704.02644.
 [Liu2026]  K.~Liu,
-{Metric completion of the Bender--Brody--Muller Hamiltonian: dilation spectrum and missing
+Metric completion of the Bender--Brody--Muller Hamiltonian: dilation spectrum and missing
 eigenstates}, arXiv:2607.19067 (2026).
 [BerryKeating1999]  M.~V. Berry and J.~P. Keating,
 The Riemann zeros and eigenvalue asymptotics,
 SIAM Rev. 41 (1999) 236--266.
 [EndresSteiner2010]  S.~Endres and F.~Steiner,
-{The Berry--Keating operator on $L^2(R_>,d x)$ and on compact quantum graphs with general
+The Berry--Keating operator on $L^2(R_>,d x)$ and on compact quantum graphs with general
 self-adjoint realizations}, J. Phys. A 43 (2010) 095204, arXiv:0912.3183.
 [Sierra2008]  G.~Sierra,
 A quantum mechanical model of the Riemann zeros,
