@@ -1,0 +1,105 @@
+Step 5 - the rigidity theorem: no choice of extension phases works.
+
+Step 3 left one loophole open.  The decoupled self-adjoint extension of the BBM
+operator is genuinely discrete and carries the correct E log E Weyl law, but
+each interval I_n = (2 pi n, 2 pi (n+1)) carries a free extension phase
+theta_n in [0, 2 pi), so its levels looked like free parameters.  With
+infinitely many of them one might hope to fit the zeros.
+
+This script closes that loophole.  In the zero variable gamma = E/2 the ladder
+of interval n is
+
+        gamma^(n)_m = (2 pi m + theta_n) / L_n ,   L_n = log(1 + 1/n),
+
+an arithmetic progression of spacing s_n = 2 pi / L_n.  Two obstructions:
+
+  I.  a DENSITY obstruction, uniform in theta.  Counting levels in (0, T] with
+      c = T / 2 pi,
+          theta_n = 0        -> floor(c L_n)
+          0 < theta_n < 2 pi -> floor(c L_n - theta_n/2pi) + 1 >= floor(c L_n)
+      so floor(c L_n) is a lower bound for EVERY theta_n, and
+
+          N_theta(T) >= sum_n floor(c L_n) = D(c) - gamma c + o(c)
+                      = N_Riemann(T) + gamma c + o(c),
+
+      where D is the Dirichlet divisor summatory function.  The model is forced
+      to carry at least gamma c excess levels below every height, whatever the
+      phases.  The arithmetic that comes out of this construction is the
+      divisor function, not the zeros.
+
+  II. a RIGIDITY obstruction.  Each ladder is an arithmetic progression and the
+      zeros are not, so most forced levels cannot be placed on zeros even with
+      the best phase.  Measured below by direct optimisation.
+
+using 500 zeros, gamma_1 = 14.134725 ... gamma_500 = 811.184359
+
+I. the theta-uniform lower bound, checked against random phases
+------------------------------------------------------------------------------
+ c = T/2pi   bound sum floor(c L_n)   min over 500 random theta   holds
+      20.0                       52                          82    True
+     137.0                      617                         885    True
+     500.0                     2897                        3929    True
+
+I'. the bound IS the divisor summatory function, shifted by gamma
+------------------------------------------------------------------------------
+        c   sum floor(c L_n)          D(c)   D(c) - gamma c     N_Riemann   excess / c
+    1e+02                419           482            424.3         361.4     0.576080
+    1e+03               6487          7069           6491.8        5908.6     0.578370
+    1e+04              87872         93668          87895.8       82104.3     0.576772
+    1e+05            1109015       1166750        1109028.4     1051293.4     0.577216
+    1e+06           13392742      13970034       13392818.3    12815511.4     0.577231
+
+   excess / c -> gamma = 0.577216.  Analytically: sum_n [1/n - log(1+1/n)] = gamma,
+   and sum_{n<=c} floor(c/n) = D(c) = c log c + (2 gamma - 1) c + O(sqrt c), so
+   sum_n floor(c L_n) = c log c + (gamma - 1) c + o(c) = N_Riemann + gamma c + o(c).
+
+II. best possible phases: how many levels cannot sit on a zero
+------------------------------------------------------------------------------
+For each ladder the phase is optimised independently (the ladders are
+decoupled, so the joint optimum is the product of the per-ladder optima).  A
+level counts as matched if it lies within eps of a zero.  Ladders with spacing
+larger than T contribute at most one level and can always dodge, so they are
+free; the cost comes from the ladders that are forced to fire repeatedly.
+
+        T  zeros<=T    eps  min levels  matched  spurious  bound gamma*c  spurious/T
+   143.11        50   0.02          66       28        38           13.1      0.2655
+   143.11        50   0.10          72       46        26           13.1      0.1817
+   236.52       100   0.02         127       50        77           21.7      0.3255
+   236.52       100   0.10         136       82        54           21.7      0.2283
+   396.38       200   0.02         247       96       151           36.4      0.3809
+   396.38       200   0.10         267      159       108           36.4      0.2725
+   811.18       500   0.02         605      221       384           74.5      0.4734
+   811.18       500   0.10         640      370       270           74.5      0.3328
+
+The number of levels that cannot be placed on any zero grows linearly in T,
+tracking the gamma c bound, and it does so under the BEST possible choice of
+every phase.  Loosening eps by a factor of five barely helps: the ladders are
+rigid, so a ladder that fires k times in (0, T] can align with at most a couple
+of zeros no matter where it starts.
+
+STEP 5 VERDICT
+------------------------------------------------------------------------------
+Theorem (density obstruction).  For every choice of extension phases
+{theta_n} the decoupled self-adjoint extension satisfies
+
+    N_theta(T)  >=  sum_{n>=1} floor(T L_n / 2 pi)
+                 =  N_Riemann(T) + (gamma / 2 pi) T + o(T),
+
+so it carries at least (gamma/2pi) T ~ 0.0919 T levels below height T that
+are not zeros.  No choice of phases can make this spectrum the zero set.  The
+excess is exactly Euler-Mascheroni, and the counting function is the Dirichlet
+divisor summatory function D(T/2pi) in disguise: what this construction knows
+about is divisors, not zeros.
+
+The rigidity obstruction is independent and stronger in practice: arithmetic
+progressions cannot track a sequence with GUE fluctuations, so even the forced
+levels mostly miss.
+
+SCOPE, stated honestly.  This covers the DECOUPLED family - all self-adjoint
+extensions that do not couple the intervals, which is the U(1) family of
+quasi-periodic conditions, one phase per interval.  Extensions that COUPLE the
+intervals are a strictly larger family (the quantum-graph setting, where the
+Berry-Keating operator's extensions have been completely classified together
+with their Weyl asymptotics).  The bound above does not apply to them, and
+whether an analogous obstruction holds there is open.  That is the honest
+frontier of this line, and it is where a real theorem would have to live.

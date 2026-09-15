@@ -136,6 +136,55 @@ the opposite extremes: M1 is a perfectly rigid picket fence, M2 has *less* rigid
 height gets positions to within 0.1% purely because the density agrees, while its spacings are
 identical to the last digit and the zeros' vary by a factor of several.
 
+## Step 5 — rigidity: no choice of extension phases works
+
+Step 3 left one loophole: each interval of the decoupled extension carries a free phase
+$\theta_n\in[0,2\pi)$, so the levels looked like free parameters. Two obstructions close it.
+
+**I — density, uniform in $\theta$.** Counting levels in $(0,T]$ with $c=T/2\pi$, the count of
+ladder $n$ is $\lfloor cL_n\rfloor$ at $\theta_n=0$ and $\lfloor cL_n-\theta_n/2\pi\rfloor+1$
+otherwise, hence $\ge\lfloor cL_n\rfloor$ always. So for **every** $\{\theta_n\}$
+
+$$N_\theta(T)\ \ge\ \sum_{n\ge1}\Big\lfloor\frac{TL_n}{2\pi}\Big\rfloor
+= N_{\text{Riemann}}(T)+\frac{\gamma}{2\pi}T+o(T).$$
+
+At least $(\gamma/2\pi)T\approx0.0919\,T$ levels below every height are not zeros, whatever the
+phases. Verified against 500 random phase vectors, and the constant measured at $0.577231$ against
+$\gamma=0.577216$.
+
+The bound is the **Dirichlet divisor summatory function** shifted: $\sum_n\lfloor cL_n\rfloor
+= D(c)-\gamma c+o(c)$, since $\sum_n[1/n-\log(1+1/n)]=\gamma$ and $D(c)=c\log c+(2\gamma-1)c+O(\sqrt c)$.
+What this construction knows about is divisors, not zeros.
+
+**II — rigidity.** Optimising every phase independently against the first 500 zeros, the minimum
+number of levels that cannot sit within $\varepsilon$ of any zero grows linearly and runs about
+five times the density bound (384 spurious out of 605 levels at $T=811$, $\varepsilon=0.02$).
+Arithmetic progressions cannot track a sequence with GUE fluctuations.
+
+**Scope.** This covers the decoupled family only — one phase per interval. Coupled extensions are
+a strictly larger family (the quantum-graph setting) and the bound does not apply to them. That
+case is open.
+
+## Where this sits in the literature
+
+Much of the ground here is already occupied, and it is worth being explicit about it:
+
+* self-adjoint extensions of the Berry–Keating operator on compact quantum graphs have been
+  **completely classified**, with secular equation, exact trace formula and Weyl asymptotics — the
+  decoupled extension of step 3 is a special case;
+* [Sierra, *H=xp model revisited*](https://link.aps.org/doi/10.1103/PhysRevLett.106.200201)
+  (PRL **106**, 200201, 2011) and [arXiv:0712.0705](https://arxiv.org/abs/0712.0705) give $xp$-type
+  operators whose spectrum reproduces the averaged zeros, so "an $xp$ operator with the smooth
+  Riemann counting" is an established family, not a novelty;
+* [*On the Berry–Keating Operator*](https://link.springer.com/article/10.1007/s11785-026-01990-w),
+  *Complex Analysis and Operator Theory* (2026), [arXiv:2606.24405](https://arxiv.org/abs/2606.24405),
+  is recent work directly on the operator.
+
+Steps 1–2 are **verification** of Liu 2026, not new results. The no-go of step 3A is correct but
+close to folklore once stated. The $E\log E$ law of step 3B sits inside the family above. The
+parts that are not obviously subsumed are the $\theta$-uniform density bound of step 5, its
+divisor identity, and the statistical falsification of step 4 used as a systematic filter.
+
 ## What this leaves
 
 The obstruction is structural, not technical. In the dilation representation the metric is a
