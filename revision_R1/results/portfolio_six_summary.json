@@ -1,0 +1,162 @@
+{
+ "40|500": {
+  "R": 300,
+  "first": 0.19666666666666666,
+  "se": 0.02294841235531621,
+  "mean_rank": 2.3766666666666665,
+  "se_rank": 0.05024318416275323,
+  "beats_beta_300": 0.59,
+  "beats_beta_1000": 0.629,
+  "se_1000": 0.015276092432294327,
+  "wins": {
+   "Logit-normal": 39,
+   "Beta": 62,
+   "Kumaraswamy": 71,
+   "Unit-Weibull": 34,
+   "Simplex": 35,
+   "Vasicek": 59
+  },
+  "runner": "Kumaraswamy",
+  "runner_frac": 0.23666666666666666
+ },
+ "40|2000": {
+  "R": 300,
+  "first": 0.20333333333333334,
+  "se": 0.02323710315342605,
+  "mean_rank": 2.38,
+  "se_rank": 0.05114955011675119,
+  "beats_beta_300": 0.6933333333333334,
+  "beats_beta_1000": 0.694,
+  "se_1000": 0.014572714228996602,
+  "wins": {
+   "Unit-Weibull": 47,
+   "Kumaraswamy": 58,
+   "Simplex": 41,
+   "Vasicek": 61,
+   "Logit-normal": 45,
+   "Beta": 48
+  },
+  "runner": "Kumaraswamy",
+  "runner_frac": 0.19333333333333333
+ },
+ "40|10000": {
+  "R": 300,
+  "first": 0.25,
+  "se": 0.025,
+  "mean_rank": 2.32,
+  "se_rank": 0.05417672061740344,
+  "beats_beta_300": 0.6666666666666666,
+  "beats_beta_1000": 0.685,
+  "se_1000": 0.014689281806814109,
+  "wins": {
+   "Logit-normal": 53,
+   "Vasicek": 75,
+   "Kumaraswamy": 34,
+   "Beta": 58,
+   "Unit-Weibull": 44,
+   "Simplex": 36
+  },
+  "runner": "Beta",
+  "runner_frac": 0.19333333333333333
+ },
+ "40|inf": {
+  "R": 300,
+  "first": 0.18666666666666668,
+  "se": 0.0224960901952778,
+  "mean_rank": 2.42,
+  "se_rank": 0.0500924451966043,
+  "beats_beta_300": 0.6466666666666666,
+  "beats_beta_1000": 0.691,
+  "se_1000": 0.014612289348353324,
+  "wins": {
+   "Logit-normal": 54,
+   "Simplex": 42,
+   "Beta": 60,
+   "Kumaraswamy": 46,
+   "Vasicek": 56,
+   "Unit-Weibull": 42
+  },
+  "runner": "Beta",
+  "runner_frac": 0.2
+ },
+ "100|500": {
+  "R": 300,
+  "first": 0.4766666666666667,
+  "se": 0.02883606281236255,
+  "mean_rank": 1.7733333333333334,
+  "se_rank": 0.047990461086118645,
+  "beats_beta_300": 0.7333333333333333,
+  "beats_beta_1000": 0.72,
+  "se_1000": 0.014198591479439079,
+  "wins": {
+   "Vasicek": 143,
+   "Simplex": 9,
+   "Kumaraswamy": 38,
+   "Beta": 54,
+   "Logit-normal": 45,
+   "Unit-Weibull": 11
+  },
+  "runner": "Beta",
+  "runner_frac": 0.18
+ },
+ "100|2000": {
+  "R": 300,
+  "first": 0.42333333333333334,
+  "se": 0.028526141357371502,
+  "mean_rank": 1.84,
+  "se_rank": 0.047256976740087324,
+  "beats_beta_300": 0.7533333333333333,
+  "beats_beta_1000": 0.778,
+  "se_1000": 0.013142145943490354,
+  "wins": {
+   "Kumaraswamy": 32,
+   "Simplex": 9,
+   "Vasicek": 127,
+   "Logit-normal": 63,
+   "Beta": 51,
+   "Unit-Weibull": 18
+  },
+  "runner": "Logit-normal",
+  "runner_frac": 0.21
+ },
+ "100|10000": {
+  "R": 300,
+  "first": 0.49,
+  "se": 0.028861739379323625,
+  "mean_rank": 1.73,
+  "se_rank": 0.04735242286248511,
+  "beats_beta_300": 0.8166666666666667,
+  "beats_beta_1000": 0.794,
+  "se_1000": 0.0127892142057282,
+  "wins": {
+   "Unit-Weibull": 17,
+   "Logit-normal": 65,
+   "Vasicek": 147,
+   "Kumaraswamy": 18,
+   "Beta": 44,
+   "Simplex": 9
+  },
+  "runner": "Logit-normal",
+  "runner_frac": 0.21666666666666667
+ },
+ "100|inf": {
+  "R": 300,
+  "first": 0.45666666666666667,
+  "se": 0.02875889556422628,
+  "mean_rank": 1.7633333333333334,
+  "se_rank": 0.046047412271330905,
+  "beats_beta_300": 0.7933333333333333,
+  "beats_beta_1000": 0.796,
+  "se_1000": 0.012742998077375669,
+  "wins": {
+   "Vasicek": 137,
+   "Logit-normal": 73,
+   "Beta": 41,
+   "Kumaraswamy": 25,
+   "Unit-Weibull": 19,
+   "Simplex": 5
+  },
+  "runner": "Logit-normal",
+  "runner_frac": 0.24333333333333335
+ }
+}

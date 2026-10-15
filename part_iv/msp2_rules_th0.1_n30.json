@@ -1,0 +1,24 @@
+{
+ "0.1|30|beta": {
+  "crit": 0.5725714018270694,
+  "lr_power": 0.0615,
+  "aic_power": 0.406,
+  "aic_size": 0.3785,
+  "neg_share": 0.0
+ },
+ "0.1|30|kw": {
+  "crit": 1.094576027064728,
+  "lr_power": 0.089,
+  "aic_power": 0.4045,
+  "aic_size": 0.3265,
+  "neg_share": 0.0
+ },
+ "0.1|30|simplex": {
+  "crit": 1.2239632029698884,
+  "lr_power": 0.082,
+  "aic_power": 0.5165,
+  "aic_size": 0.4185,
+  "neg_share": 0.0
+ },
+ "_elapsed_s": 799.3383195400238
+}
